@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class FibonacciPartialSum {
+public class WordMachine {
 
     public static int solution(String S) {
         // write your code in Java SE 8
