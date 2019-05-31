@@ -12,4 +12,4 @@ hobbies = {
     "Peter": ['surfing', 'reading']
 }
 
-print(" ".join(find_names_people_hobbies(hobbies, 'reading')))
+print("\n".join(find_names_people_hobbies(hobbies, 'reading')))
