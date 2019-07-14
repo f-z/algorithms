@@ -55,6 +55,65 @@ def count_wins(dice1, dice2):
 
 
 print(count_wins([1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]))
+print(count_wins([1, 1, 6, 6, 8, 8], [2, 2, 4, 4, 9, 9]))
 
-from itertools import permutations
-print(permutations("123456789", 4).__sizeof__())
+
+def find_the_best_dice(dices):
+    assert all(len(dice) == 6 for dice in dices)
+    index = 0
+    while index < len(dices):
+        dice = dices[index]
+        is_best_dice = True
+        inner_index = 0
+        while inner_index < len(dices):
+            if index == inner_index:
+                inner_index += 1
+                continue
+            dice_wins, comp_dice_wins = count_wins(dice, dices[inner_index])
+            if dice_wins <= comp_dice_wins:
+                is_best_dice = False
+                break
+            inner_index += 1
+        if is_best_dice:
+            return index
+        index += 1
+    return -1
+
+
+print(find_the_best_dice([[1, 1, 6, 6, 8, 8], [2, 2, 4, 4, 9, 9], [3, 3, 5, 5, 7, 7]]))
+print(find_the_best_dice([[1, 1, 2, 4, 5, 7], [1, 2, 2, 3, 4, 7], [1, 2, 3, 4, 5, 6]]))
+print(find_the_best_dice([[3, 3, 3, 3, 3, 3], [6, 6, 2, 2, 2, 2], [4, 4, 4, 4, 0, 0], [5, 5, 5, 1, 1, 1]]))
+print(find_the_best_dice([[1, 1, 4, 6, 7, 8], [2, 2, 2, 6, 7, 7], [3, 3, 3, 5, 5, 8]]))
+
+
+def compute_strategy(dices):
+    assert all(len(dice) == 6 for dice in dices)
+
+    strategy = dict()
+    strategy["choose_first"] = True
+    strategy["first_dice"] = 0
+
+    best_dice = find_the_best_dice(dices)
+    if best_dice > -1:
+        strategy["first_dice"] = best_dice
+    else:
+        strategy["choose_first"] = False
+        for index in range(len(dices)):
+            dice = dices[index]
+            inner_index = 0
+            while inner_index < len(dices):
+                if index == inner_index:
+                    inner_index += 1
+                    continue
+                dice_wins, comp_dice_wins = count_wins(dice, dices[inner_index])
+                if dice_wins < comp_dice_wins:
+                    strategy[index] = inner_index
+                    break
+                inner_index += 1
+
+    return strategy
+
+
+print(compute_strategy([[1, 1, 4, 6, 7, 8], [2, 2, 2, 6, 7, 7], [3, 3, 3, 5, 5, 8]]))
+print(compute_strategy([[4, 4, 4, 4, 0, 0], [7, 7, 3, 3, 3, 3], [6, 6, 2, 2, 2, 2], [5, 5, 5, 1, 1, 1]]))
+print(compute_strategy([[1, 4, 5, 6, 9, 10], [2, 2, 3, 7, 11, 11], [3, 4, 4, 5, 6, 12]]))

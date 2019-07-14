@@ -34,3 +34,5 @@ for d in it.product(range(10), repeat=4):
         list_positive_integers_fixed_sum.append(d)
 
 print(len(list_positive_integers_fixed_sum))
+
+print(itertools.permutations("123456789", 4).__sizeof__())
