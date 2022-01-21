@@ -24,3 +24,5 @@ def marginals(a):
         marginal = np.apply_over_axes(np.sum, a, [j for j in ranged if j != k])
         marginal_sums.append(marginal)
     return marginal_sums
+
+a = np.arange(8).reshape(4,2)
